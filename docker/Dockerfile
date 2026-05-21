@@ -42,8 +42,13 @@ ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 RUN git clone --recursive https://github.com/FunAudioLLM/CosyVoice.git
 
 RUN conda activate ${VENV} && conda install -y -c conda-forge pynini==2.1.5
+RUN conda activate ${VENV} && pip install uv "setuptools<81" wheel
 RUN conda activate ${VENV} && cd CosyVoice && \
-    pip install -r requirements.txt --no-cache-dir
+    uv pip install --python /opt/conda/envs/${VENV}/bin/python openai-whisper==20231117 --no-build-isolation
+RUN conda activate ${VENV} && cd CosyVoice && \
+    uv pip install --python /opt/conda/envs/${VENV}/bin/python --index-strategy unsafe-best-match -r requirements.txt && \
+    pip uninstall -y deepspeed && \
+    uv pip install --python /opt/conda/envs/${VENV}/bin/python peft
 
 WORKDIR /workspace/CosyVoice
 

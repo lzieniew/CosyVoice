@@ -14,4 +14,7 @@ mkdir input output
 ```
 docker compose up
 ```
+
+The output will be in `output/` directory
+
 It will be built on first run, subsequent runs of the container will use the already downloaded dependendencies and model

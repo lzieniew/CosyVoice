@@ -15,11 +15,13 @@ services:
       - ./output:/output
       - model-cache:/root/.cache
     environment:
-      - WEIGHTS=/input/${WEIGHTS_FILE:-weights}
+      - WEIGHTS=/input/${WEIGHTS_FILE:-weights.tar.gz}
       - REFERENCE=/input/${REFERENCE_FILE:-reference.wav}
       - TEXT=/input/${TEXT_FILE:-text.txt}
-      - BASE_MODEL=${BASE_MODEL:-iic/Fun-CosyVoice3-0.5B}
-      - LANGUAGE=${LANGUAGE:-<|en|>}
+      - BASE_MODEL=${BASE_MODEL:-FunAudioLLM/Fun-CosyVoice3-0.5B-2512}
+      - LANGUAGE=${LANGUAGE:-You are a helpful assistant.<|endofprompt|>}
+      - PROMPT_TEXT=${PROMPT_TEXT:-}
+      - SPEED=${SPEED:-1.0}
       - HF_TOKEN=${HF_TOKEN:-}
       - OUTPUT_DIR=/output
 
