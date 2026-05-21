@@ -1,0 +1,27 @@
+services:
+  cosyvoice:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ./input:/input:ro
+      - ./output:/output
+      - model-cache:/root/.cache
+    environment:
+      - WEIGHTS=/input/${WEIGHTS_FILE:-weights}
+      - REFERENCE=/input/${REFERENCE_FILE:-reference.wav}
+      - TEXT=/input/${TEXT_FILE:-text.txt}
+      - BASE_MODEL=${BASE_MODEL:-iic/Fun-CosyVoice3-0.5B}
+      - LANGUAGE=${LANGUAGE:-<|en|>}
+      - HF_TOKEN=${HF_TOKEN:-}
+      - OUTPUT_DIR=/output
+
+volumes:
+  model-cache:
